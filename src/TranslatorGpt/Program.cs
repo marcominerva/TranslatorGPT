@@ -62,6 +62,7 @@ builder.Services.AddChatGpt((services, options) =>
 
     options.MessageLimit = chatGtpOptions.MessageLimit;
     options.MessageExpiration = chatGtpOptions.MessageExpiration;
+    options.DefaultParameters.Temperature = chatGtpOptions.DefaultParameters.Temperature;
     options.DefaultModel = model.GetValueOrDefault(OpenAIChatGptModels.Gpt35Turbo);
 });
 

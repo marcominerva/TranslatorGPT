@@ -8,6 +8,6 @@ public class TranslationRequestValidator : AbstractValidator<TranslationRequest>
     public TranslationRequestValidator()
     {
         RuleFor(r => r.Text).NotEmpty();
-        RuleFor(r => r.Language).NotEmpty().MaximumLength(6);
+        RuleFor(r => r.Language).NotEmpty().MaximumLength(7);
     }
 }

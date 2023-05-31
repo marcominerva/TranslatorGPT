@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using ChatGptNet;
 using OperationResults;
@@ -31,12 +32,13 @@ public class TranslatorService : ITranslatorService
                 "description": null
             }]
 
-            If you think there is only one acceptable translation, returns a JSON array with a single element. If you think there are multiple acceptable translations, provides each translation in the array.
-            You can use the "description" property to provide comments on the corresponding translation.
+            Do not return anything besides the JSON. If you think there is only one acceptable translation, returns a JSON array with a single element. If you think there are multiple acceptable translations, provides each translation in the array.
+            If the destination language is a neutral culture, try to provide the translation also for specific culture. For example, if the user requests the translation to English, provide alternatives for English (US) and English (UK) and all other English variants.
+            You can use the "description" property to provide comments on the corresponding translation. The "description" property must be in the target language.
             """;
 
         var translationRequestmessage = $"""
-            Translate "{request.Text}" to "{request.Language}"
+            Translate "{request.Text}" to {request.Language}
             """;
 
         var conversationId = await chatGptClient.SetupAsync(setupMessage);
@@ -44,5 +46,15 @@ public class TranslatorService : ITranslatorService
 
         var translations = JsonSerializer.Deserialize<List<TranslationResponse>>(response.GetMessage(), jsonSerializerOptions);
         return translations;
+    }
+
+    public Task<Result<IEnumerable<Language>>> GetLanguagesAsync()
+    {
+        var cultures = CultureInfo.GetCultures(CultureTypes.NeutralCultures);
+        var languages = cultures.Where(c => c.IsNeutralCulture).Select(c => new Language(c.IetfLanguageTag, c.EnglishName))
+            .OrderBy(l => l.Name);
+
+        var result = Result<IEnumerable<Language>>.Ok(languages);
+        return Task.FromResult(result);
     }
 }

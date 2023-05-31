@@ -69,81 +69,40 @@
     <div class="row">
         <figure class="text-center">
             <blockquote class="blockquote">
-                <i class="bi bi-chat-dots" style="font-size: 2rem;" aria-hidden="true"></i>
+                <i class="bi bi-translate" style="font-size: 2rem;" aria-hidden="true"></i>
             </blockquote>
             <figcaption class="blockquote-footer">
-                Upload a document. Ask anything about it.
+                Translate text using AI
             </figcaption>
         </figure>
     </div>
 
-    <div x-show="!conversationId" x-transition>
-        <div class="row" x-data="{ files: null }">
-            <div class="col-md-10 col-sm-9 col-10">
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="d-flex bi bi-info-circle text-muted"
-                           data-bs-toggle="tooltip" data-bs-html="true"
-                           data-bs-title=".docx, .pdf and textual content files are allowed (20 MB max). Files aren't stored in any way on the server. They are only used to setup the conversation."></i>
-                    </span>
-                    <input class="form-control" type="file" x-on:change="files = Object.values($event.target.files); uploadErrorMessage = null" />
-                </div>
-            </div>
-            <div class="col-md-2 col-sm-3 col-2">
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button" x-on:click="uploadFile(files)" x-bind:disabled="files == null || isUploading">
-                        <span x-cloak x-show="isUploading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        <i x-show="!isUploading" class="bi bi-cloud-arrow-up" aria-hidden="true"></i><span class="d-none d-lg-inline ps-3">Upload</span>
-                    </button>
-                </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="input-group">
+                <textarea x-on:input.debounce.500ms="translate" class="form-control" rows="10" placeholder="Insert your text here..." x-model="sourceText" x-on:change="errorMessage = null"></textarea>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col">- or -</div>
+        <div class="col-6">
+            <select class="form-select" x-model="language" x-on:change="translate">
+                <option value="" disabled>Select the target language</option>
+                @foreach (var language in Model.Languages)
+                {
+                    <option value="@language.Code">@language.Name</option>
+                }
+            </select>
+            <ul x-show="!isBusy" class="mt-2 list-group list-group-flush">
+                <template x-for="translation in translations">
+                    <li class="list-group-item">
+                        <span x-text="translation.text"></span>
+                        <span class="text-muted" x-text="translation.description"></span>
+                    </li>
+                </template>
+            </ul>
         </div>
+    </div>
 
-        <div class="row" x-data="{ url: '' }">
-            <div class="col-md-10 col-sm-9 col-10">
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="d-flex bi bi-info-circle text-muted"
-                           data-bs-toggle="tooltip" data-bs-html="true"
-                           data-bs-title="The URL of the document or the HTML page you want to chat about. Documents aren't stored in any way on the server. They are only used to setup the conversation."></i>
-                    </span>
-                    <input class="form-control" type="url" placeholder="Insert the URL of the page/document..." x-model="url" x-on:change="uploadErrorMessage = null" />
-                </div>
-            </div>
-            <div class="col-md-2 col-sm-3 col-2">
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button" x-on:click="uploadFromUrl(url)" x-bind:disabled="url.trim().length == 0 || isUploading">
-                        <span x-cloak x-show="isUploading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        <i x-show="!isUploading" class="bi bi-cloud-arrow-up" aria-hidden="true"></i><span class="d-none d-lg-inline ps-3">Upload</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">- or -</div>
-        </div>
-
-        <div class="row" x-data="{ content: '' }">
-            <div class="col">
-                <div class="input-group">
-                    <textarea class="form-control" rows="10" placeholder="Insert your content here..." x-model="content" x-on:change="uploadErrorMessage = null"></textarea>
-                </div>
-            </div>
-            <div class="offset-10 col-2 text-end mt-2">
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="button" x-on:click="uploadFromContent(content)" x-bind:disabled="content.trim().length == 0 || isUploading">
-                        <span x-cloak x-show="isUploading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        <i x-show="!isUploading" class="bi bi-cloud-arrow-up" aria-hidden="true"></i><span class="d-none d-lg-inline ps-3">Upload</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
+    <div class="row">
         <template x-if="errorMessage">
             <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                 <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
@@ -152,89 +111,6 @@
             </div>
         </template>
     </div>
-
-    <template x-if="conversationId">
-        <div class="card mx-auto" x-data="{ show: false }" x-init="$nextTick(() => show = true )" x-show.important="show" x-transition>
-            <div class="card-body" style="height: 500px; overflow: auto;">
-
-                <template x-for="message in messages">
-                    <div>
-                        <template x-if="message.role == 'user'">
-                            <div class="d-flex align-items-baseline text-end justify-content-end">
-                                <div class="pe-2">
-                                    <div>
-                                        <div class="card card-text d-inline-block p-2 px-3 m-1" x-text="message.text"></div>
-                                    </div>
-                                </div>
-                                <div class="position-relative avatar">
-                                    <img src="~/images/user.png" class="img-fluid rounded-circle" alt="">
-                                </div>
-                            </div>
-                        </template>
-
-                        <template x-if="message.role == 'assistant'">
-                            <div class="d-flex align-items-baseline">
-                                <div class="position-relative avatar">
-                                    <img src="~/images/assistant.png" class="img-fluid rounded-circle" alt="">
-                                </div>
-                                <div class="pe-2">
-                                    <div>
-                                        <template x-if="!message.text">
-                                            <div class="card card-text d-inline-block p-3 px-3 m-1">
-                                                <div class="progress-chat" role="progressbar" aria-label="I'm thinking'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                    <div class="progress-bar-chat">
-                                                        <div class="progress-bar-indeterminate"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </template>
-
-                                        <template x-if="message.text">
-                                            <div class="card card-text d-inline-block p-2 px-3 m-1">
-                                                <span x-html="message.text"></span>
-                                                <div x-cloak class="text-end bg-transparent border-0" x-show="message.isCompleted">
-                                                    <button type="button" class="btn-clipboard" aria-label="Copy to clipboard" x-init="$nextTick(() => new bootstrap.Tooltip($el))"
-                                                            data-bs-toggle="tooltip" data-bs-html="true"
-                                                            data-bs-title="Copy to clipboard" x-on:click="copyToClipboard($el, message.text)">
-                                                        <i class="bi bi-clipboard"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-
-                    </div>
-                </template>
-
-                <div x-ref="chat" x-init="$watch('messages', value => setTimeout(() => $refs.chat.scrollIntoView(), 1))"></div>
-            </div>
-
-            <div class="card-footer bg-white w-100 bottom-0 m-0 p-1">
-                <form x-on:submit.prevent>
-                    <div class="input-group" x-init="setTimeout(() => $refs.input.focus(), 150)">
-                        <span class="input-group-text bg-transparent border-0">
-                            <i class="d-flex bi bi-info-circle text-muted" x-init="$nextTick(() => new bootstrap.Tooltip($el))"
-                               data-bs-toggle="tooltip" data-bs-html="true"
-                               data-bs-title="Messages aren't stored in any way on either the client or the server."></i>
-                        </span>
-                        <input x-ref="input" type="text" x-model="message" class="form-control border-0" placeholder="Ask me anything about the document..." aria-label="Ask me anything about the document" maxlength="2000">
-                        <div class="input-group-text bg-transparent border-0">
-                            <button type="submit" class="btn btn-primary" x-on:click="ask()" x-bind:disabled="message.trim().length == 0 || isAsking">
-                                <i class="bi bi-send"></i>
-                            </button>
-                            <button type="button" class="btn btn-primary ms-2" x-on:click="reset()" x-bind:disabled="isAsking">
-                                <i class="bi bi-x-lg"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </template>
-
 </div>
 
 @section Scripts

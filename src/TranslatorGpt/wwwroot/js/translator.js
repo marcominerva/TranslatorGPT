@@ -7,11 +7,11 @@
         resourceName: null,
         apiKey: null,
         model: Alpine.$persist(null),
-        
-        text: '',
-        language: '',
+
+        sourceText: '',        
+        language: Alpine.$persist(''),
+        context: null,
         translations: [],
-        isAsking: false,
 
         reset: function () {
             this.translations = [];
@@ -19,12 +19,21 @@
             this.isBusy = false;
         },
 
-        translate: async function (url) {
+        translate: async function () {
+            while (this.isBusy)
+            {
+                await sleep(100);
+            }
+
+            if (this.sourceText == '' || this.language == '' || this.apiKey == null || this.model == null) {
+                return;
+            }
+
             this.reset();
             this.isBusy = true;
 
             try {
-                const response = await translateText(url);
+                const response = await translateText(this.sourceText, this.language, this.context, this.provider, this.apiKey, this.resourceName, this.model);
                 const content = await response.json();
 
                 this.isBusy = false;
