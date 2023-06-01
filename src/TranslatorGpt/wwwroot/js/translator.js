@@ -4,8 +4,8 @@
         errorMessage: null,
 
         provider: Alpine.$persist('OpenAI'),
-        resourceName: null,
-        apiKey: null,
+        resourceName: Alpine.$persist(null),
+        apiKey: Alpine.$persist(null),
         model: Alpine.$persist(null),
 
         sourceText: '',        

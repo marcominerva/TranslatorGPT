@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using ChatGptNet;
 using OperationResults;
+using TinyHelpers.Extensions;
 using TranslatorGpt.BusinessLayer.Services.Interfaces;
 using TranslatorGpt.Shared.Models;
 
@@ -34,15 +35,25 @@ public class TranslatorService : ITranslatorService
 
             Do not return anything besides the JSON. If you think there is only one acceptable translation, returns a JSON array with a single element. If you think there are multiple acceptable translations, provides each translation in the array.
             If the destination language is a neutral culture, try to provide the translation also for specific culture. For example, if the user requests the translation to English, provide alternatives for English (US) and English (UK) and all other English variants.
-            You can use the "description" property to provide comments on the corresponding translation. The "description" property must be in the target language.
+            You can use the "description" property to provide comments on the corresponding translation. The description must be provided in the same language of the user's message.
             """;
 
-        var translationRequestmessage = $"""
-            Translate "{request.Text}" to {request.Language}
+        var translationRequestMessage = $"""
+            Translate "{request.Text}" to {CultureInfo.GetCultureInfo(request.Language).EnglishName}.
             """;
+
+        if (request.Context.HasValue())
+        {
+            translationRequestMessage = $"""
+                {translationRequestMessage}
+
+                Use the following context information to instruct the translator: 
+                {request.Context}
+                """;
+        }
 
         var conversationId = await chatGptClient.SetupAsync(setupMessage);
-        var response = await chatGptClient.AskAsync(conversationId, translationRequestmessage);
+        var response = await chatGptClient.AskAsync(conversationId, translationRequestMessage);
 
         var translations = JsonSerializer.Deserialize<List<TranslationResponse>>(response.GetMessage(), jsonSerializerOptions);
         return translations;

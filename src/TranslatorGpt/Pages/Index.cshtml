@@ -82,6 +82,10 @@
             <div class="input-group">
                 <textarea x-on:input.debounce.500ms="translate" class="form-control" rows="10" placeholder="Insert your text here..." x-model="sourceText" x-on:change="errorMessage = null"></textarea>
             </div>
+            <div class="input-group">
+                <textarea x-on:input.debounce.500ms="translate" class="form-control" rows="5"
+                    placeholder="(Optional) Insert context information that can help the translation (for example, this text is talking about software development, the text contains legal terms, etc.)..." x-model="context" x-on:change="errorMessage = null"></textarea>
+            </div>
         </div>
         <div class="col-6">
             <select class="form-select" x-model="language" x-on:change="translate">
