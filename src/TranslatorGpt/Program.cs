@@ -100,7 +100,7 @@ if (swagger.IsEnabled)
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>
     {
-        options.SwaggerDoc("v1", new OpenApiInfo { Title = "Translator GPT API", Version = "v1" });
+        options.SwaggerDoc("v1", new OpenApiInfo { Title = "TranslatorGPT API", Version = "v1" });
 
         options.AddDefaultResponse();
         options.AddSimpleAuthentication(builder.Configuration);
@@ -199,7 +199,7 @@ if (swagger.IsEnabled)
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Translator GPT API v1");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "TranslatorGPT API v1");
         options.InjectStylesheet("/css/swagger.css");
     });
 }

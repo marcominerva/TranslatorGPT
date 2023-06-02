@@ -35,7 +35,7 @@ public class TranslatorService : ITranslatorService
 
             Do not return anything besides the JSON. If you think there is only one acceptable translation, returns a JSON array with a single element. If you think there are multiple acceptable translations, provides each translation in the array.
             If the destination language is a neutral culture, try to provide the translation also for specific culture. For example, if the user requests the translation to English, provide alternatives for English (US) and English (UK) and all other English variants.
-            You can use the "description" property to provide comments on the corresponding translation, using the original language of the user's message.             
+            You can use the "description" property to provide comments on the corresponding translation. Always provide a description for each translation when there are more than one translation. If you're unable to determine the language to use for the "description" property, use the English language.
             """;
 
         /*
@@ -45,7 +45,7 @@ public class TranslatorService : ITranslatorService
          */
 
         var translationRequestMessage = $"""
-            Translate "{request.Text}" to {CultureInfo.GetCultureInfo(request.Language).EnglishName}.
+            Translate "{request.Text}" to {CultureInfo.GetCultureInfo(request.Language).EnglishName}. The description must be in the same language of "{request.Text}".
             """;
 
         if (request.Context.HasValue())

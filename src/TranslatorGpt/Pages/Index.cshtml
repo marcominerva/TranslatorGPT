@@ -80,10 +80,10 @@
     <div class="row">
         <div class="col-6">
             <div class="input-group">
-                <textarea x-on:input.debounce.750ms="translate" class="form-control" rows="10" placeholder="Insert your text here..." x-model="sourceText" x-on:change="errorMessage = null"></textarea>
+                <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="10" placeholder="Insert your text here..." x-model="sourceText" x-on:change="errorMessage = null"></textarea>
             </div>
             <div class="input-group">
-                <textarea x-on:input.debounce.750ms="translate" class="form-control" rows="5"
+                <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="5"
                           placeholder='(Optional) Insert context information that can help the translation (for example, "this text is talking about software development", "the text contains legal terms", etc.)...' x-model="context" x-on:change="errorMessage = null"></textarea>
             </div>
         </div>
