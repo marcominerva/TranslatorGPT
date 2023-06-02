@@ -4,32 +4,33 @@
         errorMessage: null,
 
         provider: Alpine.$persist('OpenAI'),
-        resourceName: Alpine.$persist(null),
-        apiKey: Alpine.$persist(null),
-        model: Alpine.$persist(null),
+        resourceName: null,
+        apiKey: '',
+        model: Alpine.$persist(''),
 
         sourceText: '',        
         language: Alpine.$persist(''),
         context: null,
         translations: [],
 
-        reset: function () {
-            this.translations = [];
-            this.errorMessage = null;
-            this.isBusy = false;
-        },
-
         translate: async function () {
+            this.errorMessage = null;
+            this.translations = [];
+
+            if (this.sourceText.trim().length == 0 || this.language == '') {
+                return;
+            }
+
+            if (this.apiKey.trim().length == 0 || this.model.trim().length == 0) {
+                this.errorMessage = 'Use the <a href="#" data-bs-toggle="modal" data-bs-target="#settings">Settings</a> dialog to set the API Key and the other requested configurations for OpenAI';
+                return;
+            }
+
             while (this.isBusy)
             {
                 await sleep(100);
             }
 
-            if (this.sourceText == '' || this.language == '' || this.apiKey == null || this.model == null) {
-                return;
-            }
-
-            this.reset();
             this.isBusy = true;
 
             try {

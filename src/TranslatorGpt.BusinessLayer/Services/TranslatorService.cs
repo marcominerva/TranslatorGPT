@@ -45,7 +45,8 @@ public class TranslatorService : ITranslatorService
          */
 
         var translationRequestMessage = $"""
-            Translate "{request.Text}" to {CultureInfo.GetCultureInfo(request.Language).EnglishName}. The description must be in the same language of "{request.Text}".
+            Translate "{request.Text}" to {CultureInfo.GetCultureInfo(request.Language).EnglishName}.
+            The description must be in the same language of "{request.Text}".
             """;
 
         if (request.Context.HasValue())
@@ -62,6 +63,14 @@ public class TranslatorService : ITranslatorService
         var response = await chatGptClient.AskAsync(conversationId, translationRequestMessage);
 
         var translations = JsonSerializer.Deserialize<List<TranslationResponse>>(response.GetMessage(), jsonSerializerOptions);
+        foreach (var translation in translations)
+        {
+            if (request.Text.Trim().EqualsIgnoreCase(translation.Description.Trim()) || translation.Text.Trim().EqualsIgnoreCase(translation.Description.Trim()))
+            {
+                translation.Description = null;
+            }
+        }
+
         return translations;
     }
 

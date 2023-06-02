@@ -47,7 +47,7 @@ builder.Services.AddChatGpt((services, options) =>
 
     var request = httpContext?.Request;
     var provider = (request?.Headers["x-provider"].ToString().ToLowerInvariant().GetValueOrDefault() ?? builder.Configuration.GetValue<string>("ChatGPT:Provider")).GetValueOrDefault(string.Empty);
-    var resourceName = (request?.Headers["x-resource-name"].ToString().ToLowerInvariant().GetValueOrDefault() ?? builder.Configuration.GetValue<string>("ChatGPT:ResourceName")).GetValueOrDefault(string.Empty);
+    var resourceName = (request?.Headers["x-resource-name"].ToString().GetValueOrDefault() ?? builder.Configuration.GetValue<string>("ChatGPT:ResourceName")).GetValueOrDefault(string.Empty);
     var model = request?.Headers["x-model"].ToString();
 
     // Checks if we want to use OpenAI or Azure OpenAI service.

@@ -80,11 +80,11 @@
     <div class="row">
         <div class="col-6">
             <div class="input-group">
-                <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="10" placeholder="Insert your text here..." x-model="sourceText" x-on:change="errorMessage = null"></textarea>
+                <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="10" placeholder="Insert your text here..." x-model="sourceText"></textarea>
             </div>
             <div class="input-group">
                 <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="5"
-                          placeholder='(Optional) Insert context information that can help the translation (for example, "this text is talking about software development", "the text contains legal terms", etc.)...' x-model="context" x-on:change="errorMessage = null"></textarea>
+                          placeholder='(Optional) Insert context information that can help the translation (for example, "this text is talking about software development", "the text contains legal terms", etc.)...' x-model="context"></textarea>
             </div>
         </div>
         <div class="col-6">
@@ -100,6 +100,13 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
+            <template x-if="errorMessage">
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
+                    <span x-html="errorMessage"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </template>
             <ul x-show="!isBusy" class="mt-2 list-group list-group-flush">
                 <template x-for="translation in translations">
                     <li class="list-group-item">
@@ -116,16 +123,6 @@
                 </template>
             </ul>
         </div>
-    </div>
-
-    <div class="row">
-        <template x-if="errorMessage">
-            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
-                <span x-text="errorMessage"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </template>
     </div>
 </div>
 
