@@ -1,2 +1,2 @@
-# Translator GPT
+# TranslatorGPT
 Translate text using AI
