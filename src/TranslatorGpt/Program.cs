@@ -34,6 +34,8 @@ var swagger = builder.Services.ConfigureAndGet<SwaggerSettings>(builder.Configur
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorPages();
 
+builder.Services.AddRequestLocalization(settings.SupportedCultures);
+
 builder.Services.AddWebOptimizer(minifyCss: true, minifyJavaScript: builder.Environment.IsProduction());
 
 builder.Services.AddChatGpt((services, options) =>
@@ -205,6 +207,7 @@ if (swagger.IsEnabled)
 }
 
 app.UseRouting();
+app.UseRequestLocalization();
 
 app.UseWhen(context => context.IsApiRequest(), builder =>
 {
