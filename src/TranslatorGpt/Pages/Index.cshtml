@@ -1,0 +1,140 @@
+﻿@page
+@model IndexModel
+
+@section RightCommands
+    {
+    <a href="#" class="nav-link text-dark" data-bs-toggle="modal" data-bs-target="#settings"><i class="bi bi-gear"></i> @Localization.Index.Settings</a>
+}
+
+<div x-data="translator">
+
+    <div class="modal fade" id="settings" tabindex="-1" aria-labelledby="settingsTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="settingsTitle">Settings</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="provider" class="col-sm-2 col-form-label">@Localization.Index.Provider</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" id="provider" x-model="provider">
+                                <option value="OpenAI">@Localization.Index.OpenAIProvider</option>
+                                <option value="Azure">@Localization.Index.AzureProvider</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div x-cloak class="mb-3" x-show="provider === 'Azure'">
+                        <div class="d-flex align-items-center">
+                            <input class="d-flex form-control me-2" placeholder="@Localization.Index.InsertResourceName" aria-label="@Localization.Index.InsertResourceName"
+                                   x-model="resourceName" />
+                            <i class="d-flex bi bi-info-circle text-body-secondary"
+                               data-bs-toggle="tooltip" data-bs-html="true"
+                               data-bs-title="@Localization.Index.ResourceNameTooltip"></i>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 d-flex align-items-center">
+                        <input class="d-flex form-control me-2" type="password" placeholder="@Localization.Index.InsertApiKey" aria-label="@Localization.Index.InsertApiKey"
+                               x-model="apiKey" />
+                        <i class="d-flex bi bi-info-circle text-body-secondary"
+                           data-bs-toggle="tooltip" data-bs-html="true"
+                           data-bs-title="@Localization.Index.ApiKeyTooltip"></i>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <input class="d-flex form-control me-2" placeholder="@Localization.Index.InsertModelName" aria-label="@Localization.Index.InsertModelName"
+                               x-model="model" list="models" />
+                        <datalist id="models">
+                            <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                            <option value="gpt-4">gpt-4</option>
+                            <option value="gpt-4-32k">gpt-4-32k</option>
+                        </datalist>
+                        <i class="d-flex bi bi-info-circle text-body-secondary"
+                           data-bs-toggle="tooltip" data-bs-html="true"
+                           data-bs-title="@Localization.Index.ModelNameTooltip"></i>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">@Localization.Index.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <figure class="text-center">
+            <blockquote class="blockquote">
+                <i class="bi bi-translate" style="font-size: 2rem;" aria-hidden="true"></i>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+                @Localization.Index.ApplicationDescription
+            </figcaption>
+        </figure>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="input-group">
+                <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="10" placeholder="@Localization.Index.InsertText"
+                    x-model="sourceText" autofocus></textarea>
+            </div>
+            <div class="input-group">
+                <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="5"
+                          placeholder='@Localization.Index.InsertContextInformation' x-model="context"></textarea>
+            </div>
+        </div>
+        <div class="col-6">
+            <select class="form-select" x-model="language" x-on:change="translate">
+                <option value="" disabled>Select the target language</option>
+                @foreach (var language in Model.Languages)
+                {
+                    <option value="@language.Code">@language.Name</option>
+                }
+            </select>
+            <div x-cloak class="mt-5 text-center" x-show="isBusy">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <template x-if="errorMessage">
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
+                    <span x-html="errorMessage"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </template>
+            <ul x-show="!isBusy" class="mt-2 list-group list-group-flush">
+                <template x-for="translation in translations">
+                    <li class="list-group-item">
+                        <span x-text="translation.text"></span>
+                        <span class="text-body-secondary" x-text="translation.description"></span>
+                        <div class="text-end bg-transparent border-0">
+                            <button type="button" class="btn-clipboard" aria-label="@Localization.Index.CopyToClipboard" x-init="$nextTick(() => new bootstrap.Tooltip($el))"
+                                    data-bs-toggle="tooltip" data-bs-html="true"
+                                    data-bs-title="@Localization.Index.CopyToClipboard" x-on:click="copyToClipboard($el, translation.text, '@Localization.Index.CopyToClipboard', '@Localization.Index.Copied')">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+        @{
+            var invalidSettingsErrorMessage = Html.Raw(HttpUtility.HtmlDecode(Resources.Pages.Index.InvalidSettingsErrorMessage).Replace("'","\\'"));
+            <script>
+                document.addEventListener("alpine:init", () => {
+                    translator('@Thread.CurrentThread.CurrentUICulture.TwoLetterISOLanguageName', '@invalidSettingsErrorMessage');
+                });
+            </script>
+        }
+}
