@@ -7,3 +7,8 @@ Translate text using AI
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/marcominerva/TranslatorGPT/blob/master/LICENSE)
 
 https://translatorgpt.azurewebsites.net
+
+**Contribute**
+
+The project is constantly evolving. Contributions are welcome. Feel free to file issues and pull requests on the repo and we'll address them as we can.
+
