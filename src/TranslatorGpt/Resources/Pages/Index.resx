@@ -165,6 +165,9 @@
   <data name="ResourceNameTooltip" xml:space="preserve">
     <value>The name of the Azure OpenAI Resource that contains the ChatGPT model.</value>
   </data>
+  <data name="SelectTargetLanguage" xml:space="preserve">
+    <value>Select the target language</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>

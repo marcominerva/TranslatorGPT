@@ -205,6 +205,15 @@ namespace TranslatorGpt.Resources.Pages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the target language.
+        /// </summary>
+        public static string SelectTargetLanguage {
+            get {
+                return ResourceManager.GetString("SelectTargetLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
