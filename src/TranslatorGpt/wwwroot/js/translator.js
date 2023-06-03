@@ -1,11 +1,12 @@
-﻿function translator() {
+﻿function translator(browserLanguage, invalidSettingsErrorMessage) {
     Alpine.data("translator", () => ({
+        browserLanguage: browserLanguage,
         isBusy: false,
         errorMessage: null,
 
         provider: Alpine.$persist('OpenAI'),
-        resourceName: null,
-        apiKey: '',
+        resourceName: Alpine.$persist(null),
+        apiKey: Alpine.$persist(''),
         model: Alpine.$persist(''),
 
         sourceText: '',        
@@ -22,7 +23,7 @@
             }
 
             if (this.apiKey.trim().length == 0 || this.model.trim().length == 0) {
-                this.errorMessage = 'Use the <a href="#" data-bs-toggle="modal" data-bs-target="#settings">Settings</a> dialog to set the API Key and the other requested configurations for OpenAI';
+                this.errorMessage = invalidSettingsErrorMessage;
                 return;
             }
 

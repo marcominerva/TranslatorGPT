@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using System.Web;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using TranslatorGpt.BusinessLayer.Services.Interfaces;
 using TranslatorGpt.Shared.Models;
 
@@ -17,6 +18,8 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
+        var text = HttpUtility.HtmlDecode(Resources.Pages.Index.InvalidSettingsErrorMessage);
+        Console.WriteLine(text);
         var languagesResponse = await translatorService.GetLanguagesAsync();
         Languages = languagesResponse.Content;
     }

@@ -34,14 +34,14 @@ function sleep(time) {
     });
 }
 
-async function copyToClipboard(element, text)
+async function copyToClipboard(element, text, copyToClipboardMessage, copiedMessage)
 {
     let tooltip = bootstrap.Tooltip.getInstance(element);
     tooltip.hide();
 
     navigator.clipboard.writeText(text);
 
-    element.setAttribute('data-bs-title', 'Copied!');
+    element.setAttribute('data-bs-title', copiedMessage);
 
     tooltip = new bootstrap.Tooltip(element);
     tooltip.show();
@@ -50,6 +50,6 @@ async function copyToClipboard(element, text)
     tooltip.hide();
 
     // Resets the tooltip title
-    element.setAttribute('data-bs-title', 'Copy to clipboard');
+    element.setAttribute('data-bs-title', copyToClipboardMessage);
     new bootstrap.Tooltip(element);
 }
