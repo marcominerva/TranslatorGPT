@@ -3,7 +3,7 @@
 
 @section RightCommands
     {
-    <a href="#" class="nav-link text-dark" data-bs-toggle="modal" data-bs-target="#settings"><i class="bi bi-gear"></i> @Translations.Index.Settings</a>
+    <a href="#" class="nav-link text-dark" data-bs-toggle="modal" data-bs-target="#settings"><i class="bi bi-gear"></i> @Localization.Index.Settings</a>
 }
 
 <div x-data="translator">
@@ -18,35 +18,35 @@
 
                 <div class="modal-body">
                     <div class="row mb-3">
-                        <label for="provider" class="col-sm-2 col-form-label">@Translations.Index.Provider</label>
+                        <label for="provider" class="col-sm-2 col-form-label">@Localization.Index.Provider</label>
                         <div class="col-sm-10">
                             <select class="form-select" id="provider" x-model="provider">
-                                <option value="OpenAI">@Translations.Index.OpenAIProvider</option>
-                                <option value="Azure">@Translations.Index.AzureProvider</option>
+                                <option value="OpenAI">@Localization.Index.OpenAIProvider</option>
+                                <option value="Azure">@Localization.Index.AzureProvider</option>
                             </select>
                         </div>
                     </div>
 
                     <div x-cloak class="mb-3" x-show="provider === 'Azure'">
                         <div class="d-flex align-items-center">
-                            <input class="d-flex form-control me-2" placeholder="@Translations.Index.InsertResourceName" aria-label="@Translations.Index.InsertResourceName"
+                            <input class="d-flex form-control me-2" placeholder="@Localization.Index.InsertResourceName" aria-label="@Localization.Index.InsertResourceName"
                                    x-model="resourceName" />
                             <i class="d-flex bi bi-info-circle text-body-secondary"
                                data-bs-toggle="tooltip" data-bs-html="true"
-                               data-bs-title="@Translations.Index.ResourceNameTooltip"></i>
+                               data-bs-title="@Localization.Index.ResourceNameTooltip"></i>
                         </div>
                     </div>
 
                     <div class="mb-3 d-flex align-items-center">
-                        <input class="d-flex form-control me-2" type="password" placeholder="@Translations.Index.InsertApiKey" aria-label="@Translations.Index.InsertApiKey"
+                        <input class="d-flex form-control me-2" type="password" placeholder="@Localization.Index.InsertApiKey" aria-label="@Localization.Index.InsertApiKey"
                                x-model="apiKey" />
                         <i class="d-flex bi bi-info-circle text-body-secondary"
                            data-bs-toggle="tooltip" data-bs-html="true"
-                           data-bs-title="@Translations.Index.ApiKeyTooltip"></i>
+                           data-bs-title="@Localization.Index.ApiKeyTooltip"></i>
                     </div>
 
                     <div class="d-flex align-items-center">
-                        <input class="d-flex form-control me-2" placeholder="@Translations.Index.InsertModelName" aria-label="@Translations.Index.InsertModelName"
+                        <input class="d-flex form-control me-2" placeholder="@Localization.Index.InsertModelName" aria-label="@Localization.Index.InsertModelName"
                                x-model="model" list="models" />
                         <datalist id="models">
                             <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
@@ -55,12 +55,12 @@
                         </datalist>
                         <i class="d-flex bi bi-info-circle text-body-secondary"
                            data-bs-toggle="tooltip" data-bs-html="true"
-                           data-bs-title="@Translations.Index.ModelNameTooltip"></i>
+                           data-bs-title="@Localization.Index.ModelNameTooltip"></i>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">@Translations.Index.Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">@Localization.Index.Close</button>
                 </div>
             </div>
         </div>
@@ -72,7 +72,7 @@
                 <i class="bi bi-translate" style="font-size: 2rem;" aria-hidden="true"></i>
             </blockquote>
             <figcaption class="blockquote-footer">
-                @Translations.Index.ApplicationDescription
+                @Localization.Index.ApplicationDescription
             </figcaption>
         </figure>
     </div>
@@ -80,12 +80,12 @@
     <div class="row">
         <div class="col-6">
             <div class="input-group">
-                <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="10" placeholder="@Translations.Index.InsertText"
+                <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="10" placeholder="@Localization.Index.InsertText"
                     x-model="sourceText" autofocus></textarea>
             </div>
             <div class="input-group">
                 <textarea maxlength="2000" x-on:input.debounce.750ms="translate" class="form-control" rows="5"
-                          placeholder='@Translations.Index.InsertContextInformation' x-model="context"></textarea>
+                          placeholder='@Localization.Index.InsertContextInformation' x-model="context"></textarea>
             </div>
         </div>
         <div class="col-6">
@@ -114,9 +114,9 @@
                         <span x-text="translation.text"></span>
                         <span class="text-body-secondary" x-text="translation.description"></span>
                         <div class="text-end bg-transparent border-0">
-                            <button type="button" class="btn-clipboard" aria-label="@Translations.Index.CopyToClipboard" x-init="$nextTick(() => new bootstrap.Tooltip($el))"
+                            <button type="button" class="btn-clipboard" aria-label="@Localization.Index.CopyToClipboard" x-init="$nextTick(() => new bootstrap.Tooltip($el))"
                                     data-bs-toggle="tooltip" data-bs-html="true"
-                                    data-bs-title="@Translations.Index.CopyToClipboard" x-on:click="copyToClipboard($el, translation.text, '@Translations.Index.CopyToClipboard', '@Translations.Index.Copied')">
+                                    data-bs-title="@Localization.Index.CopyToClipboard" x-on:click="copyToClipboard($el, translation.text, '@Localization.Index.CopyToClipboard', '@Localization.Index.Copied')">
                                 <i class="bi bi-clipboard"></i>
                             </button>
                         </div>
