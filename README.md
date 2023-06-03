@@ -1,7 +1,7 @@
 # TranslatorGPT
 
-[![CodeQL](https://github.com/marcominerva/TranslatorGPT/actions/workflows/codeql.yml/badge.svg)](https://github.com/marcominerva/TranslatorGPT/actions/workflows/codeql.yml)
 [![Lint Code Base](https://github.com/marcominerva/TranslatorGPT/actions/workflows/linter.yml/badge.svg)](https://github.com/marcominerva/TranslatorGPT/actions/workflows/linter.yml)
+[![CodeQL](https://github.com/marcominerva/TranslatorGPT/actions/workflows/codeql.yml/badge.svg)](https://github.com/marcominerva/TranslatorGPT/actions/workflows/codeql.yml)
 [![Deploy on Azure](https://github.com/marcominerva/TranslatorGPT/actions/workflows/deploy.yml/badge.svg)](https://github.com/marcominerva/TranslatorGPT/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/marcominerva/TranslatorGPT/blob/master/LICENSE)
 
