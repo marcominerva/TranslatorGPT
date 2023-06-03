@@ -38,12 +38,6 @@ public class TranslatorService : ITranslatorService
             You can use the "description" property to provide comments on the corresponding translation. Always provide a description for each translation when there are more than one translation. If you're unable to determine the language to use for the "description" property, use the English language.
             """;
 
-        /*
-            You can use the "description" property to provide comments on the corresponding translation. The description must be provided in the same language of the text to translate. For example, if the text to translate is in Italian, the description must be in Italian.
-            You can use the "description" property to provide comments on the corresponding translation. The description must be provided in the same language of the user's message.
-            You can use the "description" property to provide comments on the corresponding translation, using the original language of the user's message. 
-         */
-
         var translationRequestMessage = $"""
             Translate "{request.Text}" to {CultureInfo.GetCultureInfo(request.Language).EnglishName}.
             The description must be in the same language of "{request.Text}".
