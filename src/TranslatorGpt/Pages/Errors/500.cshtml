@@ -1,16 +1,16 @@
 ﻿@page
 
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = Translations.Errors._500.UnexpectedErrorTitle;
 }
 
 <div class="d-flex align-items-center justify-content-center">
     <div class="text-center">
         <h1 class="display-1 fw-bold">500</h1>
-        <p class="fs-3"><span class="text-danger">Ops!</span> Unexpected error.</p>
+        <p class="fs-3"><span class="text-danger">Ops!</span> @Translations.Errors._500.UnexpectedError</p>
         <p class="lead">
-            There was an unexpected error while trying to load the page. Please, try again later.
+            @Translations.Errors._500.UnexpectedErrorMessage
         </p>
-        <a title="Go to Home Page" asp-page="../Index" class="btn btn-primary"><i class="bi bi-house-door-fill"></i> Go to Home Page</a>
+        <a title="Go to Home Page" asp-page="../Index" class="btn btn-primary"><i class="bi bi-house-door-fill"></i> @Translations.Errors._500.GotoHomePage</a>
     </div>
 </div>

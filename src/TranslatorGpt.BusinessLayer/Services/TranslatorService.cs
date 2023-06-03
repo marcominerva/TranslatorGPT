@@ -77,7 +77,7 @@ public class TranslatorService : ITranslatorService
     public Task<Result<IEnumerable<Language>>> GetLanguagesAsync()
     {
         var cultures = CultureInfo.GetCultures(CultureTypes.NeutralCultures);
-        var languages = cultures.Where(c => c.IsNeutralCulture).Select(c => new Language(c.IetfLanguageTag, c.EnglishName))
+        var languages = cultures.Where(c => c.IsNeutralCulture).Select(c => new Language(c.IetfLanguageTag, c.DisplayName.FirstCharToUpper()))
             .OrderBy(l => l.Name);
 
         var result = Result<IEnumerable<Language>>.Ok(languages);
