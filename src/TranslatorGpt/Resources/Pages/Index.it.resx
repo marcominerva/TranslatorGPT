@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApiKeyTooltip" xml:space="preserve">
-    <value>l'API Key è salvata nella memoria del browser. Non è mai salvata sul server ed è utilizzata solo per invocare il servizio di ChatGPT.</value>
+    <value>L'API Key è salvata nella memoria del browser. Non è mai salvata sul server ed è utilizzata solo per invocare il servizio di ChatGPT.</value>
   </data>
   <data name="ApplicationDescription" xml:space="preserve">
     <value>Traduci utilzzando l'intelligenza artificiale</value>
