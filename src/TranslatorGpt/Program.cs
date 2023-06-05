@@ -2,8 +2,6 @@ using System.Diagnostics;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 using ChatGptNet;
-using ChatGptNet.Models;
-using ChatGptNet.ServiceConfigurations;
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.WebUtilities;
@@ -40,17 +38,18 @@ builder.Services.AddWebOptimizer(minifyCss: true, minifyJavaScript: builder.Envi
 
 builder.Services.AddChatGpt((services, options) =>
 {
-    var chatGtpOptions = builder.Configuration.GetSection<ChatGptOptions>("ChatGPT") ?? new ChatGptOptions();
+    options.UseConfiguration(builder.Configuration);
+
     var httpContext = services.GetRequiredService<IHttpContextAccessor>().HttpContext;
+    var request = httpContext?.Request;
+    var user = httpContext?.User;
 
     // Searches the claims for the API Key and uses it for querying ChatGPT.
-    var user = httpContext?.User;
-    var apiKey = (user?.FindFirstValue("ApiKey").GetValueOrDefault() ?? builder.Configuration.GetValue<string>("ChatGPT:ApiKey")).GetValueOrDefault(string.Empty);
+    var apiKey = user?.FindFirstValue("ApiKey").GetValueOrDefault(string.Empty);
 
-    var request = httpContext?.Request;
-    var provider = (request?.Headers["x-provider"].ToString().ToLowerInvariant().GetValueOrDefault() ?? builder.Configuration.GetValue<string>("ChatGPT:Provider")).GetValueOrDefault(string.Empty);
-    var resourceName = (request?.Headers["x-resource-name"].ToString().GetValueOrDefault() ?? builder.Configuration.GetValue<string>("ChatGPT:ResourceName")).GetValueOrDefault(string.Empty);
-    var model = request?.Headers["x-model"].ToString();
+    var provider = request?.Headers["x-provider"].ToString().ToLowerInvariant().GetValueOrDefault().GetValueOrDefault(string.Empty);
+    var resourceName = request?.Headers["x-resource-name"].ToString().GetValueOrDefault(string.Empty);
+    var model = request?.Headers["x-model"].ToString().GetValueOrDefault();
 
     // Checks if we want to use OpenAI or Azure OpenAI service.
     if (provider == "azure")
@@ -62,10 +61,7 @@ builder.Services.AddChatGpt((services, options) =>
         options.UseOpenAI(apiKey);
     }
 
-    options.MessageLimit = chatGtpOptions.MessageLimit;
-    options.MessageExpiration = chatGtpOptions.MessageExpiration;
-    options.DefaultParameters.Temperature = chatGtpOptions.DefaultParameters.Temperature;
-    options.DefaultModel = model.GetValueOrDefault(chatGtpOptions.DefaultModel ?? OpenAIChatGptModels.Gpt35Turbo);
+    options.DefaultModel = model;
 });
 
 builder.Services.AddValidatorsFromAssemblyContaining<TranslationRequestValidator>();
