@@ -154,7 +154,7 @@
     <value>Use the &lt;a href="#" data-bs-toggle="modal" data-bs-target="#settings"&gt;Settings&lt;/a&gt; dialog to set the API Key and the other requested configurations for ChatGPT</value>
   </data>
   <data name="ModelNameTooltip" xml:space="preserve">
-    <value>The model to use for ChatGPT. If you're using OpenAI, allowed values are: gpt-3.5-turbo, gpt-4 or gpt-4-32k. If you're working with Azure OpenAI service, model name must match the deployment name you have created in the Azure AI Studio.</value>
+    <value>The model to use for ChatGPT. If you're using OpenAI, allowed values are: gpt-3.5-turbo, gpt-3.5-turbo-16k, gpt-4 or gpt-4-32k. If you're working with Azure OpenAI service, model name must match the deployment name you have created in the Azure AI Studio.</value>
   </data>
   <data name="OpenAIProvider" xml:space="preserve">
     <value>OpenAI</value>
@@ -163,7 +163,7 @@
     <value>Provider</value>
   </data>
   <data name="ResourceNameTooltip" xml:space="preserve">
-    <value>The name of the Azure OpenAI Resource that contains the ChatGPT model.</value>
+    <value>The name of the Azure OpenAI Resource that contains the ChatGPT model</value>
   </data>
   <data name="SelectTargetLanguage" xml:space="preserve">
     <value>Select the target language</value>

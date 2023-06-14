@@ -169,7 +169,7 @@ namespace TranslatorGpt.Resources.Pages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The model to use for ChatGPT. If you&apos;re using OpenAI, allowed values are: gpt-3.5-turbo, gpt-4 or gpt-4-32k. If you&apos;re working with Azure OpenAI service, model name must match the deployment name you have created in the Azure AI Studio..
+        ///   Looks up a localized string similar to The model to use for ChatGPT. If you&apos;re using OpenAI, allowed values are: gpt-3.5-turbo, gpt-3.5-turbo-16k, gpt-4 or gpt-4-32k. If you&apos;re working with Azure OpenAI service, model name must match the deployment name you have created in the Azure AI Studio..
         /// </summary>
         public static string ModelNameTooltip {
             get {
@@ -196,7 +196,7 @@ namespace TranslatorGpt.Resources.Pages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name of the Azure OpenAI Resource that contains the ChatGPT model..
+        ///   Looks up a localized string similar to The name of the Azure OpenAI Resource that contains the ChatGPT model.
         /// </summary>
         public static string ResourceNameTooltip {
             get {
