@@ -154,7 +154,7 @@
     <value>Usa la finestra &amp;lt;a href=&amp;quot;#&amp;quot; data-bs-toggle=&amp;quot;modal&amp;quot; data-bs-target=&amp;quot;#settings&amp;quot;&amp;gt;Impostazioni&amp;lt;/a&amp;gt; per inserire l'API Key e le altre informazioni necessarie alla configurazione di ChatGPT</value>
   </data>
   <data name="ModelNameTooltip" xml:space="preserve">
-    <value>Il modello da utilizzare per ChatGPT. Se si sta utilizzando OpenAI, i valori consentiti sono: gpt-3.5-turbo, gpt-4 or gpt-4-32k. Se si sta utilizzando Azure OpenAI service, il nome del modello deve corrispondere al nome della distruzione che è stata creata nell'Azure AI Studio.</value>
+    <value>Il modello da utilizzare per ChatGPT. Se si sta utilizzando OpenAI, i valori consentiti sono: gpt-3.5-turbo, gpt-3.5-turbo-16k, gpt-4 or gpt-4-32k. Se si sta utilizzando Azure OpenAI service, il nome del modello deve corrispondere al nome della distruzione che è stata creata nell'Azure AI Studio.</value>
   </data>
   <data name="OpenAIProvider" xml:space="preserve">
     <value>OpenAI</value>
@@ -163,7 +163,7 @@
     <value>Provider</value>
   </data>
   <data name="ResourceNameTooltip" xml:space="preserve">
-    <value>Il nome della risorsa di Azure OpenAI Resource che contiene il modello ChatGPT.</value>
+    <value>Il nome della risorsa di Azure OpenAI Resource che contiene il modello ChatGPT</value>
   </data>
   <data name="SelectTargetLanguage" xml:space="preserve">
     <value>Seleziona la lingua della traduzione</value>
