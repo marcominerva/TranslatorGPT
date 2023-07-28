@@ -1,9 +1,10 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
-using TranslatorGpt.BusinessLayer.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using TinyHelpers.Extensions;
+using TranslatorGpt.BusinessLayer.Settings;
 
 namespace TranslatorGpt.Swagger;
 
@@ -22,7 +23,7 @@ public class SwaggerBasicAuthenticationMiddleware
     {
         if (context.Request.Path.StartsWithSegments("/swagger") && settings.UserName.HasValue() && settings.Password.HasValue())
         {
-            string authenticationHeader = context.Request.Headers["Authorization"];
+            string authenticationHeader = context.Request.Headers[HeaderNames.Authorization];
             if (authenticationHeader?.StartsWith("Basic ") ?? false)
             {
                 // Get the credentials from request header
