@@ -13,6 +13,8 @@ public class TranslatorService : ITranslatorService
 {
     private readonly IChatGptClient chatGptClient;
 
+    private const string ContentFilteredMessage = "***** (The response was filtered by the content filtering system. Please modify your prompt and retry. To learn more about content filtering policies please read the documentation: https://go.microsoft.com/fwlink/?linkid=2198766)";
+
     private static readonly JsonSerializerOptions jsonSerializerOptions = new(JsonSerializerDefaults.Web)
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
@@ -56,12 +58,24 @@ public class TranslatorService : ITranslatorService
         var conversationId = await chatGptClient.SetupAsync(setupMessage);
         var response = await chatGptClient.AskAsync(conversationId, translationRequestMessage);
 
-        var translations = JsonSerializer.Deserialize<List<TranslationResponse>>(response.GetMessage(), jsonSerializerOptions);
-        foreach (var translation in translations)
+        List<TranslationResponse> translations;
+        if (response.IsPromptFiltered || response.IsContentFiltered)
         {
-            if (request.Text.Trim().EqualsIgnoreCase(translation.Description.Trim()) || translation.Text.Trim().EqualsIgnoreCase(translation.Description.Trim()))
+            translations = new()
             {
-                translation.Description = null;
+                new TranslationResponse(ContentFilteredMessage, null)
+            };
+        }
+        else
+        {
+            translations = JsonSerializer.Deserialize<List<TranslationResponse>>(response.GetContent(), jsonSerializerOptions);
+
+            foreach (var translation in translations)
+            {
+                if (request.Text.Trim().EqualsIgnoreCase(translation.Description.Trim()) || translation.Text.Trim().EqualsIgnoreCase(translation.Description.Trim()))
+                {
+                    translation.Description = null;
+                }
             }
         }
 
