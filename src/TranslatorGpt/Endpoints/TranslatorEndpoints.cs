@@ -1,13 +1,12 @@
-﻿using MinimalHelpers.Routing;
-using OperationResults.AspNetCore.Http;
+﻿using OperationResults.AspNetCore.Http;
 using TranslatorGpt.BusinessLayer.Services.Interfaces;
 using TranslatorGpt.Shared.Models;
 
 namespace TranslatorGpt.Endpoints;
 
-public class ChatEndpoints : IEndpointRouteHandler
+public class ChatEndpoints : IEndpointRouteHandlerBuilder
 {
-    public void MapEndpoints(IEndpointRouteBuilder endpoints)
+    public static void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
         var translatorApiGroup = endpoints.MapGroup("/api/translate").RequireAuthorization();
 
@@ -18,7 +17,7 @@ public class ChatEndpoints : IEndpointRouteHandler
             .WithOpenApi();
     }
 
-    public async Task<IResult> TranslateAsync(TranslationRequest request, ITranslatorService translatorService, HttpContext httpContext)
+    public static async Task<IResult> TranslateAsync(TranslationRequest request, ITranslatorService translatorService, HttpContext httpContext)
     {
         var result = await translatorService.TranslateAsync(request);
 

@@ -6,8 +6,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.OpenApi.Models;
-using MinimalHelpers.OpenApi;
-using MinimalHelpers.Routing;
 using OperationResults.AspNetCore.Http;
 using SimpleAuthentication;
 using SimpleAuthentication.ApiKey;
@@ -102,7 +100,6 @@ if (swagger.IsEnabled)
 
         options.AddDefaultResponse();
         options.AddSimpleAuthentication(builder.Configuration);
-        options.AddMissingSchemas();
     });
 }
 
