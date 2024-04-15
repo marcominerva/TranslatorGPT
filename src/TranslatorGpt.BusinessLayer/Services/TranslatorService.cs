@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ChatGptNet;
+using ChatGptNet.Extensions;
 using OperationResults;
 using TinyHelpers.Extensions;
 using TranslatorGpt.BusinessLayer.Services.Interfaces;
@@ -9,21 +10,14 @@ using TranslatorGpt.Shared.Models;
 
 namespace TranslatorGpt.BusinessLayer.Services;
 
-public class TranslatorService : ITranslatorService
+public class TranslatorService(IChatGptClient chatGptClient) : ITranslatorService
 {
-    private readonly IChatGptClient chatGptClient;
-
     private const string ContentFilteredMessage = "***** (The response was filtered by the content filtering system. Please modify your prompt and retry. To learn more about content filtering policies please read the documentation: https://go.microsoft.com/fwlink/?linkid=2198766)";
 
     private static readonly JsonSerializerOptions jsonSerializerOptions = new(JsonSerializerDefaults.Web)
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
     };
-
-    public TranslatorService(IChatGptClient chatGptClient)
-    {
-        this.chatGptClient = chatGptClient;
-    }
 
     public async Task<Result<IEnumerable<TranslationResponse>>> TranslateAsync(TranslationRequest request)
     {
@@ -61,10 +55,10 @@ public class TranslatorService : ITranslatorService
         List<TranslationResponse> translations;
         if (response.IsPromptFiltered || response.IsContentFiltered)
         {
-            translations = new()
-            {
+            translations =
+            [
                 new TranslationResponse(ContentFilteredMessage, null)
-            };
+            ];
         }
         else
         {
